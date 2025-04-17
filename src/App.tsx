@@ -19,6 +19,7 @@ import ForgotPassword from "./pages/auth/ForgotPassword";
 import Dashboard from "./pages/dashboard/Dashboard";
 import RoleManagement from "./pages/admin/RoleManagement";
 import { EnrollmentList } from '@/modules/academic/components/EnrollmentList';
+import { SubjectList } from '@/modules/academic/components/SubjectList';
 
 // Importando estilos dos temas
 import '@/themes/default/theme-styles.css';
@@ -52,6 +53,11 @@ const App = () => (
                 <Route path="/academic/enrollments" element={
                   <ProtectedRoute requiredRoles={['admin', 'staff']}>
                     <EnrollmentList />
+                  </ProtectedRoute>
+                } />
+                <Route path="/academic/subjects" element={
+                  <ProtectedRoute requiredRoles={['admin', 'staff']}>
+                    <SubjectList />
                   </ProtectedRoute>
                 } />
                 

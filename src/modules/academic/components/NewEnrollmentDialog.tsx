@@ -1,4 +1,3 @@
-
 import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import {
@@ -19,6 +18,7 @@ import { toast } from '@/hooks/use-toast';
 import { UserPlus } from 'lucide-react';
 import { Class, enrollmentService } from '../services/enrollmentService';
 import { useQuery } from '@tanstack/react-query';
+import { supabase } from '@/integrations/supabase/client';
 
 interface NewEnrollmentDialogProps {
   onEnrollmentCreated: () => void;

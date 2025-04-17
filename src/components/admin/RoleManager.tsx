@@ -29,7 +29,7 @@ import {
 } from '@/components/ui/card';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from '@/hooks/use-toast';
-import { useRBAC } from '@/hooks/use-rbac';
+import { useRBAC, UserRole } from '@/hooks/use-rbac';
 
 type UserWithRoles = {
   id: string;
@@ -43,7 +43,7 @@ export function RoleManager() {
   const [users, setUsers] = useState<UserWithRoles[]>([]);
   const [loading, setLoading] = useState(true);
   const [email, setEmail] = useState('');
-  const [role, setRole] = useState<string>('');
+  const [role, setRole] = useState<UserRole | ''>('');
   const [addingRole, setAddingRole] = useState(false);
   const { isAdminLevel } = useRBAC();
 
@@ -121,12 +121,12 @@ export function RoleManager() {
         return;
       }
 
-      // Adicionar o papel ao usuário
+      // Adicionar o papel ao usuário - corrigindo o tipo do role
       const { error: roleError } = await supabase
         .from('user_roles')
         .insert({
           user_id: profiles.id,
-          role: role,
+          role: role as UserRole, // Especificando o tipo corretamente
         });
 
       if (roleError) {
@@ -169,7 +169,7 @@ export function RoleManager() {
         .from('user_roles')
         .delete()
         .eq('user_id', userId)
-        .eq('role', roleToRemove);
+        .eq('role', roleToRemove as UserRole); // Corrigindo o tipo aqui também
 
       if (error) throw error;
 
@@ -241,7 +241,10 @@ export function RoleManager() {
             </div>
             <div className="grid gap-2">
               <Label htmlFor="role">Papel</Label>
-              <Select value={role} onValueChange={setRole}>
+              <Select 
+                value={role} 
+                onValueChange={(value: UserRole | '') => setRole(value)}
+              >
                 <SelectTrigger>
                   <SelectValue placeholder="Selecione um papel" />
                 </SelectTrigger>

@@ -1,7 +1,8 @@
 
 import { useAuth } from '@/contexts/AuthContext';
 
-type UserRole = 'student' | 'teacher' | 'guardian' | 'staff' | 'admin' | 'super_admin';
+// Define the UserRole type to match our Supabase enum
+export type UserRole = 'student' | 'teacher' | 'guardian' | 'staff' | 'admin' | 'super_admin';
 
 export const useRBAC = () => {
   const { roles, hasRole, hasAnyRole } = useAuth();

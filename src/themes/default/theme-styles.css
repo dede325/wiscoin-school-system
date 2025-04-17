@@ -1,0 +1,29 @@
+
+/* Estilos base do tema default */
+.theme-default {
+  --theme-primary-color: hsl(var(--primary));
+  --theme-secondary-color: hsl(var(--secondary));
+  --theme-accent-color: hsl(var(--accent));
+  --theme-background-color: hsl(var(--background));
+  --theme-sidebar-color: hsl(var(--sidebar-background));
+  --theme-sidebar-foreground: hsl(var(--sidebar-foreground));
+}
+
+/* Classes de personalização específicas do tema default */
+.theme-default .app-logo {
+  font-weight: 600;
+}
+
+.theme-default .sidebar-menu-item {
+  border-radius: 0.5rem;
+  transition: background-color 0.2s;
+}
+
+.theme-default .sidebar-menu-item:hover {
+  background-color: var(--theme-accent-color);
+}
+
+.theme-default .dashboard-card {
+  border-radius: var(--radius);
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+}

@@ -4,7 +4,7 @@ import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import { ThemeProvider } from "@/providers/theme-provider";
+import { ThemeSelector } from "@/themes/theme-context";
 
 // Layouts
 import MainLayout from "@/components/layout/MainLayout";
@@ -17,11 +17,15 @@ import Register from "./pages/auth/Register";
 import ForgotPassword from "./pages/auth/ForgotPassword";
 import Dashboard from "./pages/dashboard/Dashboard";
 
+// Importando estilos dos temas
+import '@/themes/default/theme-styles.css';
+import '@/themes/tabler/theme-styles.css';
+
 const queryClient = new QueryClient();
 
 const App = () => (
   <QueryClientProvider client={queryClient}>
-    <ThemeProvider>
+    <ThemeSelector>
       <TooltipProvider>
         <Toaster />
         <Sonner />
@@ -43,7 +47,7 @@ const App = () => (
           </Routes>
         </BrowserRouter>
       </TooltipProvider>
-    </ThemeProvider>
+    </ThemeSelector>
   </QueryClientProvider>
 );
 

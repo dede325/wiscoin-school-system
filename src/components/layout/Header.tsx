@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { Bell, MessageSquare, Search, User } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -7,6 +6,7 @@ import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Separator } from "@/components/ui/separator";
 import { Badge } from "@/components/ui/badge";
+import ThemeSwitcher from "@/components/theme-selector/ThemeSwitcher";
 
 interface HeaderProps {
   sidebarWidth: number;
@@ -84,6 +84,8 @@ export function Header({ sidebarWidth }: HeaderProps) {
         </div>
 
         <div className="flex items-center space-x-2">
+          <ThemeSwitcher />
+          
           <Popover>
             <PopoverTrigger asChild>
               <Button variant="outline" size="icon" className="relative">

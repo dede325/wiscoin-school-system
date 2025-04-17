@@ -1,6 +1,6 @@
 
 import { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { BookOpen, Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -14,21 +14,45 @@ import {
   CardContent,
   CardFooter,
 } from "@/components/ui/card";
+import { useAuth } from "@/contexts/AuthContext";
 
 export default function Register() {
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
+  const [email, setEmail] = useState("");
+  const [institution, setInstitution] = useState("");
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
   const [isLoading, setIsLoading] = useState(false);
-  const navigate = useNavigate();
+  const [passwordError, setPasswordError] = useState("");
+  const { signUp } = useAuth();
+
+  const validatePassword = () => {
+    if (password !== confirmPassword) {
+      setPasswordError("As senhas não coincidem");
+      return false;
+    }
+    setPasswordError("");
+    return true;
+  };
 
   const handleRegister = async (e: React.FormEvent) => {
     e.preventDefault();
+    
+    if (!validatePassword()) {
+      return;
+    }
+    
     setIsLoading(true);
     
-    // In a real application, we would call a backend API here
-    // For now, we'll just simulate a registration after a short delay
-    setTimeout(() => {
+    try {
+      await signUp(email, password, firstName, lastName);
+      // O redirecionamento é tratado dentro da função signUp
+    } catch (error) {
+      console.error("Registration error:", error);
+    } finally {
       setIsLoading(false);
-      navigate("/dashboard");
-    }, 1500);
+    }
   };
 
   return (
@@ -53,28 +77,64 @@ export default function Register() {
               <div className="grid grid-cols-2 gap-4">
                 <div className="space-y-2">
                   <Label htmlFor="firstName">Nome</Label>
-                  <Input id="firstName" required />
+                  <Input 
+                    id="firstName"
+                    value={firstName}
+                    onChange={(e) => setFirstName(e.target.value)} 
+                    required 
+                  />
                 </div>
                 <div className="space-y-2">
                   <Label htmlFor="lastName">Sobrenome</Label>
-                  <Input id="lastName" required />
+                  <Input 
+                    id="lastName" 
+                    value={lastName}
+                    onChange={(e) => setLastName(e.target.value)} 
+                    required 
+                  />
                 </div>
               </div>
               <div className="space-y-2">
                 <Label htmlFor="email">Email</Label>
-                <Input id="email" type="email" placeholder="exemplo@wischool.ao" required />
+                <Input 
+                  id="email" 
+                  type="email" 
+                  placeholder="exemplo@wischool.ao" 
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)} 
+                  required 
+                />
               </div>
               <div className="space-y-2">
                 <Label htmlFor="institution">Instituição</Label>
-                <Input id="institution" placeholder="Nome da Escola ou Instituição" required />
+                <Input 
+                  id="institution" 
+                  placeholder="Nome da Escola ou Instituição" 
+                  value={institution}
+                  onChange={(e) => setInstitution(e.target.value)} 
+                  required 
+                />
               </div>
               <div className="space-y-2">
                 <Label htmlFor="password">Senha</Label>
-                <Input id="password" type="password" required />
+                <Input 
+                  id="password" 
+                  type="password" 
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)} 
+                  required 
+                />
               </div>
               <div className="space-y-2">
                 <Label htmlFor="confirmPassword">Confirmar Senha</Label>
-                <Input id="confirmPassword" type="password" required />
+                <Input 
+                  id="confirmPassword" 
+                  type="password" 
+                  value={confirmPassword}
+                  onChange={(e) => setConfirmPassword(e.target.value)} 
+                  required 
+                />
+                {passwordError && <p className="text-sm text-red-500">{passwordError}</p>}
               </div>
               <div className="flex items-center space-x-2">
                 <Checkbox id="terms" required />

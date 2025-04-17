@@ -5,6 +5,8 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { ThemeSelector } from "@/themes/theme-context";
+import { AuthProvider } from "@/contexts/AuthContext";
+import { ProtectedRoute } from "@/components/auth/ProtectedRoute";
 
 // Layouts
 import MainLayout from "@/components/layout/MainLayout";
@@ -16,6 +18,7 @@ import Login from "./pages/auth/Login";
 import Register from "./pages/auth/Register";
 import ForgotPassword from "./pages/auth/ForgotPassword";
 import Dashboard from "./pages/dashboard/Dashboard";
+import RoleManagement from "./pages/admin/RoleManagement";
 
 // Importando estilos dos temas
 import '@/themes/default/theme-styles.css';
@@ -30,21 +33,38 @@ const App = () => (
         <Toaster />
         <Sonner />
         <BrowserRouter>
-          <Routes>
-            <Route path="/" element={<Index />} />
-            <Route path="/auth/login" element={<Login />} />
-            <Route path="/auth/register" element={<Register />} />
-            <Route path="/auth/forgot-password" element={<ForgotPassword />} />
-            
-            {/* Protected Routes */}
-            <Route element={<MainLayout />}>
-              <Route path="/dashboard" element={<Dashboard />} />
-              {/* Add more routes for other modules here */}
-            </Route>
+          <AuthProvider>
+            <Routes>
+              <Route path="/" element={<Index />} />
+              <Route path="/auth/login" element={<Login />} />
+              <Route path="/auth/register" element={<Register />} />
+              <Route path="/auth/forgot-password" element={<ForgotPassword />} />
+              
+              {/* Protected Routes */}
+              <Route element={
+                <ProtectedRoute>
+                  <MainLayout />
+                </ProtectedRoute>
+              }>
+                <Route path="/dashboard" element={<Dashboard />} />
+                
+                {/* Admin Routes */}
+                <Route 
+                  path="/admin/roles" 
+                  element={
+                    <ProtectedRoute requiredRoles={['admin', 'super_admin']}>
+                      <RoleManagement />
+                    </ProtectedRoute>
+                  } 
+                />
+                
+                {/* Add more routes for other modules here */}
+              </Route>
 
-            {/* Catch All */}
-            <Route path="*" element={<NotFound />} />
-          </Routes>
+              {/* Catch All */}
+              <Route path="*" element={<NotFound />} />
+            </Routes>
+          </AuthProvider>
         </BrowserRouter>
       </TooltipProvider>
     </ThemeSelector>

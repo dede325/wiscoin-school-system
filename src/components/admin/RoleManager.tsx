@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from 'react';
 import { Check, Loader2, UserPlus, X } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -115,13 +116,12 @@ export function RoleManager() {
         return;
       }
 
-      const roleValue = role as UserRole;
-      
+      // Use the exact role type value for Supabase
       const { error: roleError } = await supabase
         .from('user_roles')
         .insert({
           user_id: profiles.id,
-          role: roleValue
+          role: role as UserRole
         });
 
       if (roleError) {
@@ -162,7 +162,7 @@ export function RoleManager() {
         .from('user_roles')
         .delete()
         .eq('user_id', userId)
-        .eq('role', roleToRemove);
+        .eq('role', roleToRemove as UserRole);
 
       if (error) throw error;
 

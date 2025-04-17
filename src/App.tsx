@@ -1,4 +1,3 @@
-
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -19,6 +18,7 @@ import Register from "./pages/auth/Register";
 import ForgotPassword from "./pages/auth/ForgotPassword";
 import Dashboard from "./pages/dashboard/Dashboard";
 import RoleManagement from "./pages/admin/RoleManagement";
+import { EnrollmentList } from '@/modules/academic/components/EnrollmentList';
 
 // Importando estilos dos temas
 import '@/themes/default/theme-styles.css';
@@ -47,6 +47,13 @@ const App = () => (
                 </ProtectedRoute>
               }>
                 <Route path="/dashboard" element={<Dashboard />} />
+                
+                {/* Academic Routes */}
+                <Route path="/academic/enrollments" element={
+                  <ProtectedRoute requiredRoles={['admin', 'staff']}>
+                    <EnrollmentList />
+                  </ProtectedRoute>
+                } />
                 
                 {/* Admin Routes */}
                 <Route 

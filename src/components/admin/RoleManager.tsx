@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from 'react';
 import { Check, Loader2, UserPlus, X } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -47,18 +46,15 @@ export function RoleManager() {
   const [addingRole, setAddingRole] = useState(false);
   const { isAdminLevel } = useRBAC();
 
-  // Buscar usuários e seus papéis
   const fetchUsers = async () => {
     setLoading(true);
     try {
-      // Buscar perfis de usuários
       const { data: profiles, error: profilesError } = await supabase
         .from('profiles')
         .select('id, email, first_name, last_name');
 
       if (profilesError) throw profilesError;
 
-      // Para cada perfil, buscar os papéis
       const usersWithRoles = await Promise.all(
         profiles.map(async (profile) => {
           const { data: userRoles, error: rolesError } = await supabase
@@ -91,7 +87,6 @@ export function RoleManager() {
     }
   };
 
-  // Adicionar um papel a um usuário
   const addRoleToUser = async () => {
     if (!email || !role) {
       toast({
@@ -105,7 +100,6 @@ export function RoleManager() {
     setAddingRole(true);
     
     try {
-      // Buscar o ID do usuário pelo email
       const { data: profiles, error: profileError } = await supabase
         .from('profiles')
         .select('id')
@@ -121,16 +115,14 @@ export function RoleManager() {
         return;
       }
 
-      // Adicionar o papel ao usuário - corrigindo o tipo do role
       const { error: roleError } = await supabase
         .from('user_roles')
         .insert({
           user_id: profiles.id,
-          role: role as UserRole, // Especificando o tipo corretamente
+          role: role,
         });
 
       if (roleError) {
-        // Verificar se é um erro de duplicação
         if (roleError.code === '23505') {
           toast({
             title: 'Papel já atribuído',
@@ -148,7 +140,7 @@ export function RoleManager() {
         
         setEmail('');
         setRole('');
-        fetchUsers(); // Atualizar a lista
+        fetchUsers();
       }
     } catch (error) {
       console.error('Error adding role to user:', error);
@@ -162,14 +154,13 @@ export function RoleManager() {
     }
   };
 
-  // Remover um papel de um usuário
   const removeRoleFromUser = async (userId: string, roleToRemove: string) => {
     try {
       const { error } = await supabase
         .from('user_roles')
         .delete()
         .eq('user_id', userId)
-        .eq('role', roleToRemove as UserRole); // Corrigindo o tipo aqui também
+        .eq('role', roleToRemove);
 
       if (error) throw error;
 
@@ -178,7 +169,6 @@ export function RoleManager() {
         description: `O papel ${roleToRemove} foi removido do usuário com sucesso.`,
       });
 
-      // Atualizar a lista de usuários
       setUsers(users.map(user => {
         if (user.id === userId) {
           return {
@@ -198,14 +188,12 @@ export function RoleManager() {
     }
   };
 
-  // Carregar usuários ao montar o componente
   useEffect(() => {
     if (isAdminLevel()) {
       fetchUsers();
     }
   }, [isAdminLevel]);
 
-  // Mostrar mensagem se o usuário não tiver permissão
   if (!isAdminLevel()) {
     return (
       <Card>

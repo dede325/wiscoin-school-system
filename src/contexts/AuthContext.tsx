@@ -1,11 +1,9 @@
-
 import { createContext, useContext, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { supabase } from '@/integrations/supabase/client';
 import type { User, Session } from '@supabase/supabase-js';
 import { toast } from '@/hooks/use-toast';
-
-type UserRole = 'student' | 'teacher' | 'guardian' | 'staff' | 'admin' | 'super_admin';
+import { UserRole } from '@/hooks/use-rbac';
 
 interface AuthContextType {
   user: User | null;
@@ -28,7 +26,6 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
 
-  // Função para buscar os papéis do usuário
   const fetchUserRoles = async (userId: string) => {
     try {
       const { data, error } = await supabase
@@ -49,16 +46,13 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     }
   };
 
-  // Inicialização e configuração do listener de autenticação
   useEffect(() => {
-    // Primeiro, configurar o ouvinte de mudanças de estado de autenticação
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
       (event, currentSession) => {
         setSession(currentSession);
         setUser(currentSession?.user ?? null);
         
         if (currentSession?.user) {
-          // Importante: usar setTimeout para evitar deadlocks com o Supabase
           setTimeout(() => {
             fetchUserRoles(currentSession.user.id);
           }, 0);
@@ -70,7 +64,6 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       }
     );
 
-    // Em seguida, verificar se já existe uma sessão
     supabase.auth.getSession().then(({ data: { session: currentSession } }) => {
       setSession(currentSession);
       setUser(currentSession?.user ?? null);
@@ -87,7 +80,6 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     };
   }, []);
 
-  // Função para fazer login
   const signIn = async (email: string, password: string) => {
     try {
       const { error } = await supabase.auth.signInWithPassword({ email, password });
@@ -113,7 +105,6 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     }
   };
 
-  // Função para registrar um novo usuário
   const signUp = async (email: string, password: string, firstName: string, lastName: string) => {
     try {
       const { error } = await supabase.auth.signUp({ 
@@ -146,7 +137,6 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     }
   };
 
-  // Função para fazer logout
   const signOut = async () => {
     try {
       await supabase.auth.signOut();
@@ -165,12 +155,10 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     }
   };
 
-  // Função para verificar se o usuário tem um papel específico
   const hasRole = (role: UserRole) => {
     return roles.includes(role);
   };
 
-  // Função para verificar se o usuário tem pelo menos um dos papéis especificados
   const hasAnyRole = (requiredRoles: UserRole[]) => {
     return requiredRoles.some(role => roles.includes(role));
   };

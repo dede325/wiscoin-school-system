@@ -8,32 +8,32 @@ export const useRBAC = () => {
   const { roles, hasRole, hasAnyRole } = useAuth();
 
   // Verifica se o usuário é um aluno
-  const isStudent = (): boolean => hasRole('student' as UserRole);
+  const isStudent = (): boolean => hasRole('student');
 
   // Verifica se o usuário é um professor
-  const isTeacher = (): boolean => hasRole('teacher' as UserRole);
+  const isTeacher = (): boolean => hasRole('teacher');
 
   // Verifica se o usuário é um encarregado de educação
-  const isGuardian = (): boolean => hasRole('guardian' as UserRole);
+  const isGuardian = (): boolean => hasRole('guardian');
 
   // Verifica se o usuário é um funcionário
-  const isStaff = (): boolean => hasRole('staff' as UserRole);
+  const isStaff = (): boolean => hasRole('staff');
 
   // Verifica se o usuário é um administrador
-  const isAdmin = (): boolean => hasRole('admin' as UserRole);
+  const isAdmin = (): boolean => hasRole('admin');
 
   // Verifica se o usuário é um super administrador
-  const isSuperAdmin = (): boolean => hasRole('super_admin' as UserRole);
+  const isSuperAdmin = (): boolean => hasRole('super_admin');
 
   // Verifica se o usuário tem uma função administrativa (admin ou super_admin)
-  const isAdminLevel = (): boolean => hasAnyRole(['admin', 'super_admin'] as UserRole[]);
+  const isAdminLevel = (): boolean => hasAnyRole(['admin', 'super_admin']);
 
   // Verifica se o usuário tem uma função de staff (admin, super_admin ou staff)
-  const isStaffLevel = (): boolean => hasAnyRole(['admin', 'super_admin', 'staff'] as UserRole[]);
+  const isStaffLevel = (): boolean => hasAnyRole(['admin', 'super_admin', 'staff']);
 
   // Verifica se o usuário tem uma função acadêmica (admin, super_admin, staff ou teacher)
   const isAcademicLevel = (): boolean => 
-    hasAnyRole(['admin', 'super_admin', 'staff', 'teacher'] as UserRole[]);
+    hasAnyRole(['admin', 'super_admin', 'staff', 'teacher']);
 
   return {
     roles,

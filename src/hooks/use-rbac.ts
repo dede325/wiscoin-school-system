@@ -1,8 +1,8 @@
 
 import { useAuth } from '@/contexts/AuthContext';
 
-// Define the UserRole type to match our Supabase enum
-export type UserRole = 'student' | 'teacher' | 'guardian' | 'staff' | 'admin' | 'super_admin';
+// Update the UserRole type to match exactly the enum in Supabase
+export type UserRole = 'student' | 'guardian' | 'staff' | 'admin' | 'super_admin';
 
 export const useRBAC = () => {
   const { roles, hasRole, hasAnyRole } = useAuth();
@@ -10,8 +10,8 @@ export const useRBAC = () => {
   // Verifica se o usuário é um aluno
   const isStudent = (): boolean => hasRole('student');
 
-  // Verifica se o usuário é um professor
-  const isTeacher = (): boolean => hasRole('teacher');
+  // Verifica se o usuário é um professor (staff with teaching role)
+  const isTeacher = (): boolean => hasRole('staff');
 
   // Verifica se o usuário é um encarregado de educação
   const isGuardian = (): boolean => hasRole('guardian');
@@ -33,7 +33,7 @@ export const useRBAC = () => {
 
   // Verifica se o usuário tem uma função acadêmica (admin, super_admin, staff ou teacher)
   const isAcademicLevel = (): boolean => 
-    hasAnyRole(['admin', 'super_admin', 'staff', 'teacher']);
+    hasAnyRole(['admin', 'super_admin', 'staff']);
 
   return {
     roles,

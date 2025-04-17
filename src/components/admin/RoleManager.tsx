@@ -115,11 +115,13 @@ export function RoleManager() {
         return;
       }
 
+      const roleValue = role as UserRole;
+      
       const { error: roleError } = await supabase
         .from('user_roles')
         .insert({
           user_id: profiles.id,
-          role: role,
+          role: roleValue
         });
 
       if (roleError) {
@@ -238,7 +240,7 @@ export function RoleManager() {
                 </SelectTrigger>
                 <SelectContent>
                   <SelectItem value="student">Aluno</SelectItem>
-                  <SelectItem value="teacher">Professor</SelectItem>
+                  <SelectItem value="staff">Professor</SelectItem>
                   <SelectItem value="guardian">Encarregado de Educação</SelectItem>
                   <SelectItem value="staff">Funcionário</SelectItem>
                   <SelectItem value="admin">Administrador</SelectItem>

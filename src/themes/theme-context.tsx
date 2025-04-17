@@ -32,12 +32,12 @@ export const ThemeSelector = ({ children }: { children: React.ReactNode }) => {
   });
 
   const availableThemes = [
-    {id: 'default', name: 'WiSchool Default'},
-    {id: 'tabler', name: 'Tabler'},
-    {id: 'gentelella', name: 'Gentelella'},
-    {id: 'flutter', name: 'Flutter Admin Panel'},
-    {id: 'vuestic', name: 'Vuestic Admin'},
-    {id: 'coreui', name: 'CoreUI'},
+    {id: 'default' as AvailableTheme, name: 'WiSchool Default'},
+    {id: 'tabler' as AvailableTheme, name: 'Tabler'},
+    {id: 'gentelella' as AvailableTheme, name: 'Gentelella'},
+    {id: 'flutter' as AvailableTheme, name: 'Flutter Admin Panel'},
+    {id: 'vuestic' as AvailableTheme, name: 'Vuestic Admin'},
+    {id: 'coreui' as AvailableTheme, name: 'CoreUI'},
   ];
 
   useEffect(() => {

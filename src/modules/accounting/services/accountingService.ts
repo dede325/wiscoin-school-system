@@ -1,7 +1,8 @@
 
+import { supabase } from '@/integrations/supabase/client';
 import { toast } from '@/hooks/use-toast';
 
-// Tipos
+// Types
 export interface AccountingCategory {
   id: number;
   code: string;
@@ -25,7 +26,7 @@ export interface AccountingEntry {
   created_at: string;
 }
 
-// Mock de dados
+// Mock data for initial development
 let mockCategories: AccountingCategory[] = [
   {
     id: 1,
@@ -151,22 +152,22 @@ let mockEntries: AccountingEntry[] = [
   }
 ];
 
-// Serviço de Contabilidade
+// Accounting Service
 export const accountingService = {
-  // Obter categorias contábeis (plano de contas)
+  // Get accounting categories (chart of accounts)
   getAccountingCategories: async (): Promise<AccountingCategory[]> => {
     await new Promise(resolve => setTimeout(resolve, 500));
     return mockCategories;
   },
   
-  // Obter categoria por ID
+  // Get category by ID
   getCategoryById: async (id: number): Promise<AccountingCategory | null> => {
     await new Promise(resolve => setTimeout(resolve, 300));
     const category = mockCategories.find(c => c.id === id);
     return category || null;
   },
   
-  // Criar nova categoria contábil
+  // Create new accounting category
   createCategory: async (categoryData: Omit<AccountingCategory, 'id'>): Promise<AccountingCategory> => {
     await new Promise(resolve => setTimeout(resolve, 700));
     
@@ -185,7 +186,7 @@ export const accountingService = {
     return newCategory;
   },
   
-  // Obter lançamentos contábeis
+  // Get accounting entries
   getAccountingEntries: async (filters?: {
     startDate?: string;
     endDate?: string;
@@ -221,7 +222,7 @@ export const accountingService = {
     return filteredEntries;
   },
   
-  // Criar novo lançamento contábil
+  // Create new accounting entry
   createAccountingEntry: async (entryData: Omit<AccountingEntry, 'id' | 'created_at'>): Promise<AccountingEntry> => {
     await new Promise(resolve => setTimeout(resolve, 800));
     
@@ -241,7 +242,7 @@ export const accountingService = {
     return newEntry;
   },
   
-  // Gerar relatório de SAFT-T Angola
+  // Generate SAF-T Angola report
   generateSAFT: async (month: number, year: number): Promise<string> => {
     await new Promise(resolve => setTimeout(resolve, 1500));
     
@@ -250,11 +251,11 @@ export const accountingService = {
       description: `Arquivo SAFT-T de ${month}/${year} gerado com sucesso`
     });
     
-    // Na implementação real, isto retornaria o URL do arquivo ou o conteúdo XML
+    // In real implementation, this would return the URL or XML content
     return `saft_angola_${year}_${month.toString().padStart(2, '0')}.xml`;
   },
   
-  // Gerar relatório financeiro
+  // Generate financial report
   generateFinancialReport: async (
     reportType: 'income_statement' | 'balance_sheet' | 'cash_flow',
     startDate: string,
@@ -262,7 +263,7 @@ export const accountingService = {
   ): Promise<any> => {
     await new Promise(resolve => setTimeout(resolve, 1000));
     
-    // Na implementação real, isto retornaria dados estruturados para o relatório
+    // In real implementation, this would return structured data for the report
     toast({
       title: "Relatório gerado",
       description: `${
@@ -278,7 +279,7 @@ export const accountingService = {
         endDate
       },
       generatedAt: new Date().toISOString(),
-      data: {} // Dados do relatório
+      data: {} // Report data
     };
   }
 };

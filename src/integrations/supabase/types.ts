@@ -9,6 +9,50 @@ export type Json =
 export type Database = {
   public: {
     Tables: {
+      academic_history: {
+        Row: {
+          academic_year: string
+          created_at: string
+          gpa: number | null
+          id: string
+          notes: string | null
+          status: string
+          student_id: string
+          term: string
+          updated_at: string
+        }
+        Insert: {
+          academic_year: string
+          created_at?: string
+          gpa?: number | null
+          id?: string
+          notes?: string | null
+          status: string
+          student_id: string
+          term: string
+          updated_at?: string
+        }
+        Update: {
+          academic_year?: string
+          created_at?: string
+          gpa?: number | null
+          id?: string
+          notes?: string | null
+          status?: string
+          student_id?: string
+          term?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "academic_history_student_id_fkey"
+            columns: ["student_id"]
+            isOneToOne: false
+            referencedRelation: "students"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       accounting_categories: {
         Row: {
           code: string
@@ -150,6 +194,79 @@ export type Database = {
         }
         Relationships: []
       }
+      assessments: {
+        Row: {
+          classroom_id: string
+          comments: string | null
+          created_at: string
+          created_by: string
+          date: string
+          id: string
+          max_score: number
+          name: string
+          score: number
+          student_id: string
+          subject_id: string
+          type: string
+          updated_at: string
+          weight: number
+        }
+        Insert: {
+          classroom_id: string
+          comments?: string | null
+          created_at?: string
+          created_by: string
+          date: string
+          id?: string
+          max_score: number
+          name: string
+          score: number
+          student_id: string
+          subject_id: string
+          type: string
+          updated_at?: string
+          weight?: number
+        }
+        Update: {
+          classroom_id?: string
+          comments?: string | null
+          created_at?: string
+          created_by?: string
+          date?: string
+          id?: string
+          max_score?: number
+          name?: string
+          score?: number
+          student_id?: string
+          subject_id?: string
+          type?: string
+          updated_at?: string
+          weight?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "assessments_classroom_id_fkey"
+            columns: ["classroom_id"]
+            isOneToOne: false
+            referencedRelation: "classrooms"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "assessments_student_id_fkey"
+            columns: ["student_id"]
+            isOneToOne: false
+            referencedRelation: "students"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "assessments_subject_id_fkey"
+            columns: ["subject_id"]
+            isOneToOne: false
+            referencedRelation: "subjects"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       book_checkouts: {
         Row: {
           book_id: string
@@ -276,6 +393,39 @@ export type Database = {
           created_at?: string
           id?: string
           name?: string
+          status?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      classrooms: {
+        Row: {
+          academic_year: string
+          capacity: number
+          created_at: string
+          id: string
+          name: string
+          room_number: string | null
+          status: string
+          updated_at: string
+        }
+        Insert: {
+          academic_year: string
+          capacity?: number
+          created_at?: string
+          id?: string
+          name: string
+          room_number?: string | null
+          status?: string
+          updated_at?: string
+        }
+        Update: {
+          academic_year?: string
+          capacity?: number
+          created_at?: string
+          id?: string
+          name?: string
+          room_number?: string | null
           status?: string
           updated_at?: string
         }
@@ -710,6 +860,76 @@ export type Database = {
           },
         ]
       }
+      online_tests: {
+        Row: {
+          classroom_id: string | null
+          created_at: string
+          description: string | null
+          duration: number
+          end_date: string | null
+          id: string
+          start_date: string | null
+          status: string
+          subject_id: string
+          teacher_id: string
+          title: string
+          total_points: number
+          updated_at: string
+        }
+        Insert: {
+          classroom_id?: string | null
+          created_at?: string
+          description?: string | null
+          duration: number
+          end_date?: string | null
+          id?: string
+          start_date?: string | null
+          status?: string
+          subject_id: string
+          teacher_id: string
+          title: string
+          total_points: number
+          updated_at?: string
+        }
+        Update: {
+          classroom_id?: string | null
+          created_at?: string
+          description?: string | null
+          duration?: number
+          end_date?: string | null
+          id?: string
+          start_date?: string | null
+          status?: string
+          subject_id?: string
+          teacher_id?: string
+          title?: string
+          total_points?: number
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "online_tests_classroom_id_fkey"
+            columns: ["classroom_id"]
+            isOneToOne: false
+            referencedRelation: "classrooms"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "online_tests_subject_id_fkey"
+            columns: ["subject_id"]
+            isOneToOne: false
+            referencedRelation: "subjects"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "online_tests_teacher_id_fkey"
+            columns: ["teacher_id"]
+            isOneToOne: false
+            referencedRelation: "staff"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       profiles: {
         Row: {
           address: string | null
@@ -760,6 +980,67 @@ export type Database = {
           updated_at?: string
         }
         Relationships: []
+      }
+      schedules: {
+        Row: {
+          classroom_id: string
+          created_at: string
+          day_of_week: number
+          end_time: string
+          id: string
+          room: string | null
+          start_time: string
+          subject_id: string
+          teacher_id: string
+          updated_at: string
+        }
+        Insert: {
+          classroom_id: string
+          created_at?: string
+          day_of_week: number
+          end_time: string
+          id?: string
+          room?: string | null
+          start_time: string
+          subject_id: string
+          teacher_id: string
+          updated_at?: string
+        }
+        Update: {
+          classroom_id?: string
+          created_at?: string
+          day_of_week?: number
+          end_time?: string
+          id?: string
+          room?: string | null
+          start_time?: string
+          subject_id?: string
+          teacher_id?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "schedules_classroom_id_fkey"
+            columns: ["classroom_id"]
+            isOneToOne: false
+            referencedRelation: "classrooms"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "schedules_subject_id_fkey"
+            columns: ["subject_id"]
+            isOneToOne: false
+            referencedRelation: "subjects"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "schedules_teacher_id_fkey"
+            columns: ["teacher_id"]
+            isOneToOne: false
+            referencedRelation: "staff"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       sms_messages: {
         Row: {
@@ -971,6 +1252,118 @@ export type Database = {
           },
         ]
       }
+      student_test_attempts: {
+        Row: {
+          created_at: string
+          id: string
+          score: number | null
+          start_time: string
+          status: string
+          student_id: string
+          submit_time: string | null
+          test_id: string
+          total_time_spent: number | null
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          score?: number | null
+          start_time?: string
+          status?: string
+          student_id: string
+          submit_time?: string | null
+          test_id: string
+          total_time_spent?: number | null
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          score?: number | null
+          start_time?: string
+          status?: string
+          student_id?: string
+          submit_time?: string | null
+          test_id?: string
+          total_time_spent?: number | null
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "student_test_attempts_student_id_fkey"
+            columns: ["student_id"]
+            isOneToOne: false
+            referencedRelation: "students"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "student_test_attempts_test_id_fkey"
+            columns: ["test_id"]
+            isOneToOne: false
+            referencedRelation: "online_tests"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      student_test_responses: {
+        Row: {
+          answer_id: string | null
+          attempt_id: string
+          created_at: string
+          id: string
+          is_correct: boolean | null
+          points_awarded: number | null
+          question_id: string
+          text_response: string | null
+          updated_at: string
+        }
+        Insert: {
+          answer_id?: string | null
+          attempt_id: string
+          created_at?: string
+          id?: string
+          is_correct?: boolean | null
+          points_awarded?: number | null
+          question_id: string
+          text_response?: string | null
+          updated_at?: string
+        }
+        Update: {
+          answer_id?: string | null
+          attempt_id?: string
+          created_at?: string
+          id?: string
+          is_correct?: boolean | null
+          points_awarded?: number | null
+          question_id?: string
+          text_response?: string | null
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "student_test_responses_answer_id_fkey"
+            columns: ["answer_id"]
+            isOneToOne: false
+            referencedRelation: "test_answers"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "student_test_responses_attempt_id_fkey"
+            columns: ["attempt_id"]
+            isOneToOne: false
+            referencedRelation: "student_test_attempts"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "student_test_responses_question_id_fkey"
+            columns: ["question_id"]
+            isOneToOne: false
+            referencedRelation: "test_questions"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       students: {
         Row: {
           created_at: string
@@ -1015,6 +1408,39 @@ export type Database = {
           },
         ]
       }
+      subjects: {
+        Row: {
+          code: string
+          created_at: string
+          credits: number
+          description: string | null
+          id: string
+          name: string
+          status: string
+          updated_at: string
+        }
+        Insert: {
+          code: string
+          created_at?: string
+          credits?: number
+          description?: string | null
+          id?: string
+          name: string
+          status?: string
+          updated_at?: string
+        }
+        Update: {
+          code?: string
+          created_at?: string
+          credits?: number
+          description?: string | null
+          id?: string
+          name?: string
+          status?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       telco_sms_settings: {
         Row: {
           api_key: string
@@ -1044,6 +1470,85 @@ export type Database = {
           webhook_url?: string | null
         }
         Relationships: []
+      }
+      test_answers: {
+        Row: {
+          answer_text: string
+          created_at: string
+          id: string
+          is_correct: boolean
+          order_num: number
+          question_id: string
+          updated_at: string
+        }
+        Insert: {
+          answer_text: string
+          created_at?: string
+          id?: string
+          is_correct?: boolean
+          order_num: number
+          question_id: string
+          updated_at?: string
+        }
+        Update: {
+          answer_text?: string
+          created_at?: string
+          id?: string
+          is_correct?: boolean
+          order_num?: number
+          question_id?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "test_answers_question_id_fkey"
+            columns: ["question_id"]
+            isOneToOne: false
+            referencedRelation: "test_questions"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      test_questions: {
+        Row: {
+          created_at: string
+          id: string
+          order_num: number
+          points: number
+          question_text: string
+          question_type: string
+          test_id: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          order_num: number
+          points?: number
+          question_text: string
+          question_type: string
+          test_id: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          order_num?: number
+          points?: number
+          question_text?: string
+          question_type?: string
+          test_id?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "test_questions_test_id_fkey"
+            columns: ["test_id"]
+            isOneToOne: false
+            referencedRelation: "online_tests"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       user_preferences: {
         Row: {

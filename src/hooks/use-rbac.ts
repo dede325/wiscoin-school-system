@@ -1,39 +1,66 @@
 
 import { useAuth } from '@/contexts/AuthContext';
 
-// Update the UserRole type to match exactly the enum in Supabase
-export type UserRole = 'student' | 'guardian' | 'staff' | 'admin' | 'super_admin';
+// Update the UserRole type to match all the required roles
+export type UserRole = 
+  'super_admin' | 
+  'admin' | 
+  'staff' | 
+  'teacher' | 
+  'student' | 
+  'guardian' | 
+  'employee' | 
+  'driver' | 
+  'cleaner' | 
+  'manager' | 
+  'director';
 
 export const useRBAC = () => {
   const { roles, hasRole, hasAnyRole } = useAuth();
 
-  // Verifica se o usuário é um aluno
+  // Verify if user is a student
   const isStudent = (): boolean => hasRole('student');
 
-  // Verifica se o usuário é um professor (staff with teaching role)
-  const isTeacher = (): boolean => hasRole('staff');
+  // Verify if user is a teacher
+  const isTeacher = (): boolean => hasRole('teacher');
 
-  // Verifica se o usuário é um encarregado de educação
+  // Verify if user is a guardian
   const isGuardian = (): boolean => hasRole('guardian');
 
-  // Verifica se o usuário é um funcionário
+  // Verify if user is an employee
+  const isEmployee = (): boolean => hasRole('employee');
+
+  // Verify if user is a driver
+  const isDriver = (): boolean => hasRole('driver');
+
+  // Verify if user is cleaner staff
+  const isCleaner = (): boolean => hasRole('cleaner');
+
+  // Verify if user is a manager
+  const isManager = (): boolean => hasRole('manager');
+
+  // Verify if user is a director
+  const isDirector = (): boolean => hasRole('director');
+
+  // Verify if user is a staff member (general staff role)
   const isStaff = (): boolean => hasRole('staff');
 
-  // Verifica se o usuário é um administrador
+  // Verify if user is an admin
   const isAdmin = (): boolean => hasRole('admin');
 
-  // Verifica se o usuário é um super administrador
+  // Verify if user is a super admin
   const isSuperAdmin = (): boolean => hasRole('super_admin');
 
-  // Verifica se o usuário tem uma função administrativa (admin ou super_admin)
+  // Verify if user has an administrative role (admin or super_admin)
   const isAdminLevel = (): boolean => hasAnyRole(['admin', 'super_admin']);
 
-  // Verifica se o usuário tem uma função de staff (admin, super_admin ou staff)
-  const isStaffLevel = (): boolean => hasAnyRole(['admin', 'super_admin', 'staff']);
+  // Verify if user has a staff level role (includes management positions)
+  const isStaffLevel = (): boolean => 
+    hasAnyRole(['admin', 'super_admin', 'staff', 'director', 'manager']);
 
-  // Verifica se o usuário tem uma função acadêmica (admin, super_admin, staff ou teacher)
+  // Verify if user has an academic role (staff related to academic activities)
   const isAcademicLevel = (): boolean => 
-    hasAnyRole(['admin', 'super_admin', 'staff']);
+    hasAnyRole(['admin', 'super_admin', 'staff', 'teacher']);
 
   return {
     roles,
@@ -42,6 +69,11 @@ export const useRBAC = () => {
     isStudent,
     isTeacher,
     isGuardian,
+    isEmployee,
+    isDriver,
+    isCleaner,
+    isManager,
+    isDirector,
     isStaff,
     isAdmin,
     isSuperAdmin,

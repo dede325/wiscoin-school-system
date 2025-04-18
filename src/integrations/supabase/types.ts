@@ -1101,6 +1101,141 @@ export type Database = {
           },
         ]
       }
+      wiscoin_payment_requests: {
+        Row: {
+          amount: number
+          completed_at: string | null
+          created_at: string
+          description: string | null
+          expires_at: string | null
+          id: string
+          status: string
+          transaction_id: string | null
+          updated_at: string
+          wallet_id: string
+        }
+        Insert: {
+          amount: number
+          completed_at?: string | null
+          created_at?: string
+          description?: string | null
+          expires_at?: string | null
+          id?: string
+          status?: string
+          transaction_id?: string | null
+          updated_at?: string
+          wallet_id: string
+        }
+        Update: {
+          amount?: number
+          completed_at?: string | null
+          created_at?: string
+          description?: string | null
+          expires_at?: string | null
+          id?: string
+          status?: string
+          transaction_id?: string | null
+          updated_at?: string
+          wallet_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "wiscoin_payment_requests_transaction_id_fkey"
+            columns: ["transaction_id"]
+            isOneToOne: false
+            referencedRelation: "wiscoin_transactions"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "wiscoin_payment_requests_wallet_id_fkey"
+            columns: ["wallet_id"]
+            isOneToOne: false
+            referencedRelation: "wiscoin_wallets"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      wiscoin_transactions: {
+        Row: {
+          amount: number
+          created_at: string
+          description: string | null
+          id: string
+          recipient_wallet_id: string | null
+          reference: string | null
+          sender_wallet_id: string | null
+          status: string
+          type: string
+          updated_at: string
+        }
+        Insert: {
+          amount: number
+          created_at?: string
+          description?: string | null
+          id?: string
+          recipient_wallet_id?: string | null
+          reference?: string | null
+          sender_wallet_id?: string | null
+          status?: string
+          type: string
+          updated_at?: string
+        }
+        Update: {
+          amount?: number
+          created_at?: string
+          description?: string | null
+          id?: string
+          recipient_wallet_id?: string | null
+          reference?: string | null
+          sender_wallet_id?: string | null
+          status?: string
+          type?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "wiscoin_transactions_recipient_wallet_id_fkey"
+            columns: ["recipient_wallet_id"]
+            isOneToOne: false
+            referencedRelation: "wiscoin_wallets"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "wiscoin_transactions_sender_wallet_id_fkey"
+            columns: ["sender_wallet_id"]
+            isOneToOne: false
+            referencedRelation: "wiscoin_wallets"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      wiscoin_wallets: {
+        Row: {
+          balance: number
+          created_at: string
+          id: string
+          locked_balance: number
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          balance?: number
+          created_at?: string
+          id?: string
+          locked_balance?: number
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          balance?: number
+          created_at?: string
+          id?: string
+          locked_balance?: number
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never

@@ -10,6 +10,8 @@ export interface Schedule {
   start_time: string;
   end_time: string;
   room?: string;
+  created_at?: string;
+  updated_at?: string;
   classroom?: {
     name: string;
   };
@@ -46,7 +48,7 @@ export const scheduleService = {
     return data as Schedule[];
   },
 
-  async createSchedule(schedule: Omit<Schedule, 'id'>) {
+  async createSchedule(schedule: Omit<Schedule, 'id' | 'created_at' | 'updated_at' | 'classroom' | 'subject' | 'teacher'>) {
     const { data, error } = await supabase
       .from('schedules')
       .insert(schedule)

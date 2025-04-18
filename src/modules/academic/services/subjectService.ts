@@ -8,6 +8,8 @@ export interface Subject {
   description?: string;
   credits: number;
   status: string;
+  created_at?: string;
+  updated_at?: string;
 }
 
 export const subjectService = {
@@ -21,7 +23,7 @@ export const subjectService = {
     return data as Subject[];
   },
 
-  async createSubject(subject: Omit<Subject, 'id'>) {
+  async createSubject(subject: Omit<Subject, 'id' | 'created_at' | 'updated_at'>) {
     const { data, error } = await supabase
       .from('subjects')
       .insert(subject)

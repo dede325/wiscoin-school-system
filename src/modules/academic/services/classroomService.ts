@@ -8,6 +8,8 @@ export interface Classroom {
   capacity: number;
   academic_year: string;
   status: string;
+  created_at?: string;
+  updated_at?: string;
 }
 
 export const classroomService = {
@@ -21,7 +23,7 @@ export const classroomService = {
     return data as Classroom[];
   },
 
-  async createClassroom(classroom: Omit<Classroom, 'id'>) {
+  async createClassroom(classroom: Omit<Classroom, 'id' | 'created_at' | 'updated_at'>) {
     const { data, error } = await supabase
       .from('classrooms')
       .insert(classroom)
